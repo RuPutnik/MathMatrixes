@@ -42,6 +42,15 @@ public class DefaultConveyorMatrix {
     public void setElement(int row, int column, double value){
         this.completedMatrix[row][column]=value;
     }
+    public void setMatrix(DefaultConveyorMatrix matrix){
+        completedMatrix=matrix.getArray();
+    }
+    public void setMatrixArray(double[][] array){
+        completedMatrix=array;
+    }
+    public double[][] getArray(){
+        return completedMatrix;
+    }
 
     public boolean isSquare(){
         boolean square=false;
