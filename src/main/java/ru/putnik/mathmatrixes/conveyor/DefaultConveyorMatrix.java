@@ -28,7 +28,7 @@ public class DefaultConveyorMatrix extends Matrix{
             return String.valueOf(this.completedMatrix.length) + "x" + String.valueOf(this.completedMatrix[0].length);
         }
     }
-    public double valueAt(int column, int row){
+    public double valueAt(int row, int column){
         return this.completedMatrix[row-1][column-1];
     }
     public double trace(){
@@ -73,11 +73,9 @@ public class DefaultConveyorMatrix extends Matrix{
     public boolean equalsSizes(DefaultConveyorMatrix matrix) {
         return this.size().equals(matrix.size());
     }
-    public boolean equalsSizes(DefaultConveyorMatrix matrix1,DefaultConveyorMatrix matrix2) {
-        return matrix1.size().equals(matrix2.size());
-    }
+
     public DefaultConveyorMatrix add(DefaultConveyorMatrix matrix){
-        if(equalsSizes(this,matrix)){
+        if(this.equalsSizes(matrix)){
             double[][] resultValues=new double[this.completedMatrix.length][this.completedMatrix[0].length];
 
             for(int row=0;row<this.completedMatrix.length;row++){
@@ -93,7 +91,7 @@ public class DefaultConveyorMatrix extends Matrix{
         }
     }
     public DefaultConveyorMatrix substract(DefaultConveyorMatrix matrix){
-        if(equalsSizes(this,matrix)){
+        if(this.equalsSizes(matrix)){
             double[][] resultValues=new double[this.completedMatrix.length][this.completedMatrix[0].length];
 
             for(int row=0;row<this.completedMatrix.length;row++){
@@ -286,6 +284,21 @@ public class DefaultConveyorMatrix extends Matrix{
             return null;
         }
     }
+    public boolean isSymmetric(){
+        return this.trans().equalsValues(this);
+    }
+    public boolean isDiag(){
+        boolean diag=true;
+
+        for (int row=1;row<this.getCountRows()+1;row++){
+            for (int column=1;column<this.getCountColumns()+1;column++){
+                if(this.valueAt(row,column)!=0&&(row-1!=column-1)) diag=false;
+            }
+        }
+
+        return diag;
+    }
+
     @Override
     public String toString() {
         StringBuilder matrixLine= new StringBuilder();
@@ -313,4 +326,6 @@ public class DefaultConveyorMatrix extends Matrix{
         }
         return matrixLine.toString();
     }
+
+
 }

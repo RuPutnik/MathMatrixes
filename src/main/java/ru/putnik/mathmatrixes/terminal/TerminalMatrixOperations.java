@@ -1,5 +1,7 @@
 package ru.putnik.mathmatrixes.terminal;
 
+import ru.putnik.mathmatrixes.conveyor.DefaultConveyorMatrix;
+
 public class TerminalMatrixOperations {
     public static boolean equalsSizes(DefaultTerminalMatrix matrix1, DefaultTerminalMatrix matrix2) {
         return matrix1.size().equals(matrix2.size());
@@ -249,5 +251,19 @@ public class TerminalMatrixOperations {
         if(defaultMatrix.getArray().length==defaultMatrix.getArray()[0].length) return true;
 
         return square;
+    }
+    public static boolean isSymmetric(DefaultTerminalMatrix defaultMatrix){
+        return trans(defaultMatrix).equalsValues(defaultMatrix);
+    }
+    public static boolean isDiag(DefaultTerminalMatrix defaultMatrix){
+        boolean diag=true;
+
+        for (int row=1;row<defaultMatrix.getCountRows()+1;row++){
+            for (int column=1;column<defaultMatrix.getCountColumns()+1;column++){
+                if(defaultMatrix.valueAt(row,column)!=0&&(row-1!=column-1)) diag=false;
+            }
+        }
+
+        return diag;
     }
 }
