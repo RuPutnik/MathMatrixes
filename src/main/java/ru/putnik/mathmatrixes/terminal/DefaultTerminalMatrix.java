@@ -1,7 +1,12 @@
 package ru.putnik.mathmatrixes.terminal;
 
-public class DefaultTerminalMatrix {
-    protected double[][] completedMatrix;
+import ru.putnik.mathmatrixes.Matrix;
+
+public class DefaultTerminalMatrix extends Matrix{
+    public DefaultTerminalMatrix(){}
+    public DefaultTerminalMatrix(Matrix matrix){
+        completedMatrix=matrix.getArray();
+    }
     public DefaultTerminalMatrix(double[][] matrix){
         int maxColumnSize=0;
         for (int a=0;a<matrix.length;a++){
@@ -26,16 +31,18 @@ public class DefaultTerminalMatrix {
     public double valueAt(int column, int row){
         return completedMatrix[row-1][column-1];
     }
-    public DefaultTerminalMatrix set(int row, int column, double value){
-        completedMatrix[row][column]=value;
-        return this;
+    public void setElement(int row, int column, double value){
+        this.completedMatrix[row][column]=value;
     }
-    public static int getCountColumns(DefaultTerminalMatrix defaultMatrix){
-        String sizeMatrix=defaultMatrix.size();
+    public void setMatrixArray(double[][] array){
+        completedMatrix=array;
+    }
+    public int getCountColumns(){
+        String sizeMatrix=this.size();
         return Integer.parseInt(sizeMatrix.split("x")[1]);
     }
-    public static int getCountRows(DefaultTerminalMatrix defaultMatrix){
-        String sizeMatrix=defaultMatrix.size();
+    public int getCountRows(){
+        String sizeMatrix=this.size();
         return Integer.parseInt(sizeMatrix.split("x")[0]);
     }
     @Override

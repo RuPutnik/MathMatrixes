@@ -6,10 +6,10 @@ public class TerminalMatrixOperations {
     }
     public static double trace(DefaultTerminalMatrix defaultMatrix){
         if(isSquare(defaultMatrix)){
-            int length= defaultMatrix.completedMatrix.length;
+            int length= defaultMatrix.getArray().length;
             double trace=0;
             for (int a=0;a<length;a++){
-                trace=trace+ defaultMatrix.completedMatrix[a][a];
+                trace=trace+ defaultMatrix.getArray()[a][a];
             }
             return trace;
         }else {
@@ -19,11 +19,11 @@ public class TerminalMatrixOperations {
     }
     public static DefaultTerminalMatrix add(DefaultTerminalMatrix matrix1, DefaultTerminalMatrix matrix2){
         if(equalsSizes(matrix1,matrix2)){
-            double[][] resultValues=new double[matrix1.completedMatrix.length][matrix1.completedMatrix[0].length];
+            double[][] resultValues=new double[matrix1.getArray().length][matrix1.getArray()[0].length];
 
-            for(int row=0;row<matrix1.completedMatrix.length;row++){
-                for(int column=0;column<matrix1.completedMatrix[0].length;column++){
-                    resultValues[row][column]=matrix1.completedMatrix[row][column]+matrix2.completedMatrix[row][column];
+            for(int row=0;row<matrix1.getArray().length;row++){
+                for(int column=0;column<matrix1.getArray()[0].length;column++){
+                    resultValues[row][column]=matrix1.getArray()[row][column]+matrix2.getArray()[row][column];
                 }
             }
             DefaultTerminalMatrix resultMatrix=new DefaultTerminalMatrix(resultValues);
@@ -35,11 +35,11 @@ public class TerminalMatrixOperations {
     }
     public static DefaultTerminalMatrix substract(DefaultTerminalMatrix matrix1, DefaultTerminalMatrix matrix2){
         if(equalsSizes(matrix1,matrix2)){
-            double[][] resultValues=new double[matrix1.completedMatrix.length][matrix1.completedMatrix[0].length];
+            double[][] resultValues=new double[matrix1.getArray().length][matrix1.getArray()[0].length];
 
-            for(int row=0;row<matrix1.completedMatrix.length;row++){
-                for(int column=0;column<matrix1.completedMatrix[0].length;column++){
-                    resultValues[row][column]=matrix1.completedMatrix[row][column]-matrix2.completedMatrix[row][column];
+            for(int row=0;row<matrix1.getArray().length;row++){
+                for(int column=0;column<matrix1.getArray()[0].length;column++){
+                    resultValues[row][column]=matrix1.getArray()[row][column]-matrix2.getArray()[row][column];
                 }
             }
             DefaultTerminalMatrix resultMatrix=new DefaultTerminalMatrix(resultValues);
@@ -50,12 +50,12 @@ public class TerminalMatrixOperations {
         }
     }
     public static DefaultTerminalMatrix multiple(DefaultTerminalMatrix matrix1, DefaultTerminalMatrix matrix2){
-        if(DefaultTerminalMatrix.getCountColumns(matrix1)== DefaultTerminalMatrix.getCountRows(matrix2)){
-            double[][] resultValues=new double[DefaultTerminalMatrix.getCountRows(matrix1)][DefaultTerminalMatrix.getCountColumns(matrix2)];
-            for (int a = 0; a< DefaultTerminalMatrix.getCountRows(matrix1); a++){
-                for (int b = 0; b< DefaultTerminalMatrix.getCountColumns(matrix2); b++){
-                    for (int c = 0; c< DefaultTerminalMatrix.getCountColumns(matrix1); c++){
-                        resultValues[a][b]=resultValues[a][b]+(matrix1.completedMatrix[a][c]*matrix2.completedMatrix[c][b]);
+        if(matrix1.getCountColumns()==matrix2.getCountRows()){
+            double[][] resultValues=new double[matrix1.getCountRows()][matrix2.getCountColumns()];
+            for (int a = 0; a<matrix1.getCountRows(); a++){
+                for (int b = 0; b<matrix2.getCountColumns(); b++){
+                    for (int c = 0; c<matrix1.getCountColumns(); c++){
+                        resultValues[a][b]=resultValues[a][b]+(matrix1.getArray()[a][c]*matrix2.getArray()[c][b]);
                     }
 
                 }
@@ -69,26 +69,26 @@ public class TerminalMatrixOperations {
 
     }
     public static DefaultTerminalMatrix multiple(DefaultTerminalMatrix matrix, double multipler){
-        for (int row=0;row<matrix.completedMatrix.length;row++){
-            for (int column=0;column<matrix.completedMatrix[0].length;column++){
-                matrix.completedMatrix[row][column]=matrix.completedMatrix[row][column]*multipler;
+        for (int row=0;row<matrix.getArray().length;row++){
+            for (int column=0;column<matrix.getArray()[0].length;column++){
+                matrix.getArray()[row][column]=matrix.getArray()[row][column]*multipler;
             }
         }
         return matrix;
     }
     public static DefaultTerminalMatrix division(DefaultTerminalMatrix matrix, double divider){
-        for (int row=0;row<matrix.completedMatrix.length;row++){
-            for (int column=0;column<matrix.completedMatrix[0].length;column++){
-                matrix.completedMatrix[row][column]=matrix.completedMatrix[row][column]/divider;
+        for (int row=0;row<matrix.getArray().length;row++){
+            for (int column=0;column<matrix.getArray()[0].length;column++){
+                matrix.getArray()[row][column]=matrix.getArray()[row][column]/divider;
             }
         }
         return matrix;
     }
     public static DefaultTerminalMatrix trans(DefaultTerminalMatrix matrix){
-        double[][] transMatrix=new double[matrix.completedMatrix[0].length][matrix.completedMatrix.length];
-        for (int row=0;row<matrix.completedMatrix.length;row++){
-            for (int column=0;column<matrix.completedMatrix[0].length;column++){
-                transMatrix[column][row]=matrix.completedMatrix[row][column];
+        double[][] transMatrix=new double[matrix.getArray()[0].length][matrix.getArray().length];
+        for (int row=0;row<matrix.getArray().length;row++){
+            for (int column=0;column<matrix.getArray()[0].length;column++){
+                transMatrix[column][row]=matrix.getArray()[row][column];
             }
         }
         DefaultTerminalMatrix defaultMatrix =new DefaultTerminalMatrix(transMatrix);
@@ -97,11 +97,11 @@ public class TerminalMatrixOperations {
     public static double det(DefaultTerminalMatrix matrix){
         double result=0;
         if(isSquare(matrix)){
-            if(DefaultTerminalMatrix.getCountColumns(matrix)==1&& DefaultTerminalMatrix.getCountRows(matrix)==1)
-                return matrix.completedMatrix[0][0];
+            if(matrix.getCountColumns()==1&&matrix.getCountRows()==1)
+                return matrix.getArray()[0][0];
             else{
-                for(int a=0;a<matrix.completedMatrix[0].length;a++){
-                    result=result+Math.pow(-1,a)*matrix.completedMatrix[0][a]*det(moll(matrix,a));
+                for(int a=0;a<matrix.getArray()[0].length;a++){
+                    result=result+Math.pow(-1,a)*matrix.getArray()[0][a]*det(moll(matrix,a));
                 }
                 return result;
             }
@@ -113,9 +113,9 @@ public class TerminalMatrixOperations {
     public static int rank(DefaultTerminalMatrix defaultMatrix){
         int rank = 0;
         int sizeStageMatrix = 1;
-        int countRow= DefaultTerminalMatrix.getCountRows(defaultMatrix);
-        int countColumns= DefaultTerminalMatrix.getCountColumns(defaultMatrix);
-        while(sizeStageMatrix<=min(DefaultTerminalMatrix.getCountRows(defaultMatrix), DefaultTerminalMatrix.getCountColumns(defaultMatrix))){ // проверка: порядок матрицы меньше или равен минимальному из размеров матрицы?
+        int countRow=defaultMatrix.getCountRows();
+        int countColumns=defaultMatrix.getCountColumns();
+        while(sizeStageMatrix<=min(defaultMatrix.getCountRows(),defaultMatrix.getCountColumns())){ // проверка: порядок матрицы меньше или равен минимальному из размеров матрицы?
             // если да
             double[][] stageMatrix=new double[sizeStageMatrix][sizeStageMatrix]; // создаем новую матрицу размера q
 
@@ -123,7 +123,7 @@ public class TerminalMatrixOperations {
                 for(int column=0;column<(countColumns-(sizeStageMatrix-1));column++){
                     for(int c=0;c<sizeStageMatrix;c++){
                         for(int d=0;d<sizeStageMatrix;d++){
-                            stageMatrix[c][d] = defaultMatrix.completedMatrix[row+c][column+d];
+                            stageMatrix[c][d] = defaultMatrix.getArray()[row+c][column+d];
                         }
                     }
                     if(!(det(new DefaultTerminalMatrix(stageMatrix))==0)){ // если определитель матрицы отличен от нуля
@@ -146,10 +146,10 @@ public class TerminalMatrixOperations {
             return null;
         }
         double[][] values=new double[rowEnd-rowStart+1][columnEnd-columnStart+1];
-        for (int row = 0; row< DefaultTerminalMatrix.getCountRows(defaultMatrix); row++){
-            for(int column = 0; column< DefaultTerminalMatrix.getCountColumns(defaultMatrix); column++){
+        for (int row = 0; row<defaultMatrix.getCountRows(); row++){
+            for(int column = 0; column<defaultMatrix.getCountColumns(); column++){
                 if(row>=rowStart&&row<=rowEnd&&column>=columnStart&&column<=columnEnd){
-                    values[row-rowStart][column-columnStart]= defaultMatrix.completedMatrix[row][column];
+                    values[row-rowStart][column-columnStart]= defaultMatrix.getArray()[row][column];
                 }
             }
         }
@@ -158,13 +158,13 @@ public class TerminalMatrixOperations {
         return resultMatrix;
     }
     private static DefaultTerminalMatrix moll(DefaultTerminalMatrix matrix, int columnNumber){
-        double[][] resultValues=new double[matrix.completedMatrix.length-1][matrix.completedMatrix[0].length-1];
+        double[][] resultValues=new double[matrix.getArray().length-1][matrix.getArray()[0].length-1];
 
         int cl=0;
-        for (int row=1;row<matrix.completedMatrix.length;row++){
-            for (int column=0;column<matrix.completedMatrix[0].length;column++){
+        for (int row=1;row<matrix.getArray().length;row++){
+            for (int column=0;column<matrix.getArray()[0].length;column++){
                 if(column!=columnNumber) {
-                    resultValues[row-1][cl] = matrix.completedMatrix[row][column];
+                    resultValues[row-1][cl] = matrix.getArray()[row][column];
                     cl++;
                 }
             }
@@ -176,15 +176,15 @@ public class TerminalMatrixOperations {
     }
 
     private static DefaultTerminalMatrix moll1(DefaultTerminalMatrix matrix, int rowNumber, int columnNumber){
-        double[][] resultValues=new double[matrix.completedMatrix.length-1][matrix.completedMatrix[0].length-1];
+        double[][] resultValues=new double[matrix.getArray().length-1][matrix.getArray()[0].length-1];
 
         int cl=0;
         int rw=0;
-        for (int row=0;row<matrix.completedMatrix.length;row++){
+        for (int row=0;row<matrix.getArray().length;row++){
             if(row!=rowNumber) {
-                for (int column = 0; column < matrix.completedMatrix[0].length; column++) {
+                for (int column = 0; column < matrix.getArray()[0].length; column++) {
                     if (column != columnNumber) {
-                        resultValues[rw][cl] = matrix.completedMatrix[row][column];
+                        resultValues[rw][cl] = matrix.getArray()[row][column];
                         cl++;
                     }
                 }
@@ -205,15 +205,16 @@ public class TerminalMatrixOperations {
         return result;
     }
     public static DefaultTerminalMatrix reverse(DefaultTerminalMatrix matrix){
-        if(DefaultTerminalMatrix.getCountRows(matrix)== DefaultTerminalMatrix.getCountColumns(matrix)){
+        if(matrix.getCountRows()==matrix.getCountColumns()){
             if(det(matrix)!=0) {
-                double[][] values = new double[matrix.completedMatrix.length][matrix.completedMatrix[0].length];
+                double[][] values = new double[matrix.getArray().length][matrix.getArray()[0].length];
 
-                for (int row=0;row<matrix.completedMatrix.length;row++){
-                    for (int column=0;column<matrix.completedMatrix[0].length;column++){
+                for (int row=0;row<matrix.getArray().length;row++){
+                    for (int column=0;column<matrix.getArray()[0].length;column++){
                         values[row][column]=cofactor(matrix,row,column);
                     }
                 }
+
 
                 DefaultTerminalMatrix unionMatrix = new DefaultTerminalMatrix(values);
                 DefaultTerminalMatrix reverseMatrix =division(trans(unionMatrix), det(matrix));
@@ -245,7 +246,7 @@ public class TerminalMatrixOperations {
     public static boolean isSquare(DefaultTerminalMatrix defaultMatrix){
         boolean square=false;
 
-        if(defaultMatrix.completedMatrix.length==defaultMatrix.completedMatrix[0].length) return true;
+        if(defaultMatrix.getArray().length==defaultMatrix.getArray()[0].length) return true;
 
         return square;
     }

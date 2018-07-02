@@ -1,7 +1,12 @@
 package ru.putnik.mathmatrixes.conveyor;
 
-public class DefaultConveyorMatrix {
-    protected double[][] completedMatrix;
+import ru.putnik.mathmatrixes.Matrix;
+
+public class DefaultConveyorMatrix extends Matrix{
+    public DefaultConveyorMatrix(){}
+    public DefaultConveyorMatrix(Matrix matrix){
+        completedMatrix=matrix.getArray();
+    }
     public DefaultConveyorMatrix(double[][] matrix){
         int maxColumnSize=0;
         for (int a=0;a<matrix.length;a++){
@@ -41,9 +46,6 @@ public class DefaultConveyorMatrix {
     }
     public void setElement(int row, int column, double value){
         this.completedMatrix[row][column]=value;
-    }
-    public void setMatrix(DefaultConveyorMatrix matrix){
-        completedMatrix=matrix.getArray();
     }
     public void setMatrixArray(double[][] array){
         completedMatrix=array;

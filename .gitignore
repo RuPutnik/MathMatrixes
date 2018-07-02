@@ -3,3 +3,5 @@ MathMatrixes.iml
 .idea
 src/main/java/TestLauncher.java
 target
+logs
+.gitignore
