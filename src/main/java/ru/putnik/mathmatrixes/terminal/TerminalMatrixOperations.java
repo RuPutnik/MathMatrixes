@@ -78,6 +78,25 @@ public class TerminalMatrixOperations {
         }
         return matrix;
     }
+    public static DefaultTerminalMatrix pow(DefaultTerminalMatrix matrix,int degree){
+        DefaultTerminalMatrix result;
+        if(!isSquare(matrix)){
+            System.out.println("Возводить в степень можно только квадратные матрицы!");
+            return null;
+        }else {
+            result=matrix;
+            if(degree==0) {
+                return new UnitTerminalMatrix(matrix.getCountColumns());
+            }else if(degree<0){
+                return pow(reverse(matrix),-degree);
+            }else {
+                for (int a = 0; a < degree - 1; a++) {
+                    result = multiple(result,matrix);
+                }
+            }
+        }
+        return result;
+    }
     public static DefaultTerminalMatrix division(DefaultTerminalMatrix matrix, double divider){
         for (int row=0;row<matrix.getArray().length;row++){
             for (int column=0;column<matrix.getArray()[0].length;column++){

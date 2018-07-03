@@ -141,6 +141,25 @@ public class DefaultConveyorMatrix extends Matrix{
         }
         return this;
     }
+    public DefaultConveyorMatrix pow(int degree){
+        DefaultConveyorMatrix result;
+        if(!this.isSquare()){
+            System.out.println("Возводить в степень можно только квадратные матрицы!");
+            return null;
+        }else {
+            result=this;
+            if(degree==0) {
+                return new UnitConveyorMatrix(this.getCountColumns());
+            }else if(degree<0){
+                return result.reverse().pow(-degree);
+            }else {
+                for (int a = 0; a < degree - 1; a++) {
+                    result = result.multiple(this);
+                }
+            }
+        }
+        return result;
+    }
     public DefaultConveyorMatrix trans(){
         double[][] transMatrix=new double[this.completedMatrix[0].length][this.completedMatrix.length];
         for (int row=0;row<this.completedMatrix.length;row++){
