@@ -289,10 +289,13 @@ public class DefaultConveyorMatrix extends Matrix{
     }
     public boolean isDiag(){
         boolean diag=true;
-
-        for (int row=1;row<this.getCountRows()+1;row++){
-            for (int column=1;column<this.getCountColumns()+1;column++){
-                if(this.valueAt(row,column)!=0&&(row-1!=column-1)) diag=false;
+        if(!this.isSquare()) {
+            diag = false;
+        }else {
+            for (int row = 1; row < this.getCountRows() + 1; row++) {
+                for (int column = 1; column < this.getCountColumns() + 1; column++) {
+                    if (this.valueAt(row, column) != 0 && (row - 1 != column - 1)) diag = false;
+                }
             }
         }
 
@@ -300,7 +303,10 @@ public class DefaultConveyorMatrix extends Matrix{
     }
     public boolean isUnit(){
         boolean unit=true;
-
+        if(!this.isDiag()) unit=false;
+        for (int diagElement=0;diagElement<this.getCountColumns();diagElement++){
+            if(this.valueAt(diagElement,diagElement)!=1) unit=false;
+        }
         return unit;
     }
     public boolean isZero(){

@@ -258,12 +258,36 @@ public class TerminalMatrixOperations {
     public static boolean isDiag(DefaultTerminalMatrix defaultMatrix){
         boolean diag=true;
 
-        for (int row=1;row<defaultMatrix.getCountRows()+1;row++){
-            for (int column=1;column<defaultMatrix.getCountColumns()+1;column++){
-                if(defaultMatrix.valueAt(row,column)!=0&&(row-1!=column-1)) diag=false;
+        if(!isSquare(defaultMatrix)) {
+            diag = false;
+        }else {
+            for (int row = 1; row < defaultMatrix.getCountRows() + 1; row++) {
+                for (int column = 1; column < defaultMatrix.getCountColumns() + 1; column++) {
+                    if (defaultMatrix.valueAt(row, column) != 0 && (row - 1 != column - 1)) diag = false;
+                }
             }
         }
 
         return diag;
+    }
+    public static boolean isUnit(DefaultTerminalMatrix defaultMatrix){
+        boolean unit=true;
+        if(!isDiag(defaultMatrix)) unit=false;
+        for (int diagElement=0;diagElement<defaultMatrix.getCountColumns();diagElement++){
+            if(defaultMatrix.valueAt(diagElement,diagElement)!=1) unit=false;
+        }
+        return unit;
+    }
+    public static boolean isZero(DefaultTerminalMatrix defaultMatrix){
+        boolean zero=true;
+        for (int row=0;row<defaultMatrix.getCountRows();row++){
+            for(int column=0;column<defaultMatrix.getCountColumns();column++){
+                if(defaultMatrix.valueAt(row,column)!=0){
+                    zero=false;
+                    break;
+                }
+            }
+        }
+        return zero;
     }
 }
