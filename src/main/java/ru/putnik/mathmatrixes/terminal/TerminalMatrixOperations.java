@@ -97,6 +97,31 @@ public class TerminalMatrixOperations {
         }
         return result;
     }
+    public static DefaultTerminalMatrix kronekerMultiple(DefaultTerminalMatrix matrix1,DefaultTerminalMatrix matrix2){
+        int countRow=matrix1.getCountRows()*matrix2.getCountRows();
+        int countColumn=matrix1.getCountColumns()*matrix2.getCountColumns();
+        DefaultTerminalMatrix resultMatrix=new DefaultTerminalMatrix(new double[countRow][countColumn]);
+
+        int row=0;
+        int column=0;
+
+        for(int row1=0;row1<matrix1.getCountRows();row1++) {
+            for (int row2 = 0; row2 < matrix2.getCountRows();row2++) {
+
+                for (int column1 = 0; column1 < matrix1.getCountColumns(); column1++) {
+                    for (int column2 = 0; column2 < matrix2.getCountColumns(); column2++) {
+                        resultMatrix.setElement(row, column, matrix1.valueAt(row1 + 1, column1 + 1)
+                                * matrix2.valueAt(row2 + 1, column2 + 1));
+                        column++;
+                    }
+                }
+                column=0;
+                row++;
+            }
+        }
+
+        return resultMatrix;
+    }
     public static DefaultTerminalMatrix division(DefaultTerminalMatrix matrix, double divider){
         for (int row=0;row<matrix.getArray().length;row++){
             for (int column=0;column<matrix.getArray()[0].length;column++){

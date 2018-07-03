@@ -160,6 +160,31 @@ public class DefaultConveyorMatrix extends Matrix{
         }
         return result;
     }
+    public DefaultConveyorMatrix kronekerMultiple(DefaultConveyorMatrix matrix){
+        int countRow=this.getCountRows()*matrix.getCountRows();
+        int countColumn=this.getCountColumns()*matrix.getCountColumns();
+        DefaultConveyorMatrix resultMatrix=new DefaultConveyorMatrix(new double[countRow][countColumn]);
+
+            int row=0;
+            int column=0;
+
+                for(int row1=0;row1<this.getCountRows();row1++) {
+                    for (int row2 = 0; row2 < matrix.getCountRows();row2++) {
+
+                        for (int column1 = 0; column1 < this.getCountColumns(); column1++) {
+                            for (int column2 = 0; column2 < matrix.getCountColumns(); column2++) {
+                                resultMatrix.setElement(row, column, this.valueAt(row1 + 1, column1 + 1)
+                                        * matrix.valueAt(row2 + 1, column2 + 1));
+                                column++;
+                        }
+                }
+                column=0;
+                row++;
+            }
+        }
+
+        return resultMatrix;
+    }
     public DefaultConveyorMatrix trans(){
         double[][] transMatrix=new double[this.completedMatrix[0].length][this.completedMatrix.length];
         for (int row=0;row<this.completedMatrix.length;row++){
