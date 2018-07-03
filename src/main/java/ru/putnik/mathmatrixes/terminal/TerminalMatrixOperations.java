@@ -140,6 +140,40 @@ public class TerminalMatrixOperations {
         DefaultTerminalMatrix defaultMatrix =new DefaultTerminalMatrix(transMatrix);
         return defaultMatrix;
     }
+    public static DefaultTerminalMatrix rotate90(DefaultTerminalMatrix matrix){
+        DefaultTerminalMatrix resultMatrix=new DefaultTerminalMatrix(new double[matrix.getCountColumns()][matrix.getCountRows()]);
+        for (int row=0;row<resultMatrix.getCountRows();row++){
+            for(int column=0;column<resultMatrix.getCountColumns();column++){
+                resultMatrix.setElement(row,column,matrix.valueAt(resultMatrix.getCountColumns()-column,row+1));
+            }
+        }
+        return resultMatrix;
+    }
+    public static DefaultTerminalMatrix rotate180(DefaultTerminalMatrix matrix){
+        DefaultTerminalMatrix resultMatrix=new DefaultTerminalMatrix(new double[matrix.getCountRows()][matrix.getCountColumns()]);
+        for (int row=0;row<resultMatrix.getCountRows();row++){
+            for(int column=0;column<resultMatrix.getCountColumns();column++){
+                resultMatrix.setElement(row,column,matrix.valueAt(resultMatrix.getCountRows()-row,resultMatrix.getCountColumns()-column));
+            }
+        }
+        return resultMatrix;
+    }
+    public static DefaultTerminalMatrix rotate270(DefaultTerminalMatrix matrix){
+        DefaultTerminalMatrix resultMatrix=new DefaultTerminalMatrix(new double[matrix.getCountColumns()][matrix.getCountRows()]);
+        for (int row=0;row<resultMatrix.getCountRows();row++){
+            for(int column=0;column<resultMatrix.getCountColumns();column++){
+                resultMatrix.setElement(row,column,matrix.valueAt(column+1,resultMatrix.getCountRows()-row));
+            }
+        }
+        return resultMatrix;
+    }
+    public static DefaultTerminalMatrix rotate(DefaultTerminalMatrix matrix,int count90){
+        DefaultTerminalMatrix resultMatrix=matrix;
+        for (int countRt=0;countRt<count90;countRt++){
+            resultMatrix=rotate90(resultMatrix);
+        }
+        return resultMatrix;
+    }
     public static double det(DefaultTerminalMatrix matrix){
         double result=0;
         if(isSquare(matrix)){

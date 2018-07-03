@@ -195,6 +195,40 @@ public class DefaultConveyorMatrix extends Matrix{
         DefaultConveyorMatrix defaultMatrix =new DefaultConveyorMatrix(transMatrix);
         return defaultMatrix;
     }
+    public DefaultConveyorMatrix rotate90(){
+        DefaultConveyorMatrix resultMatrix=new DefaultConveyorMatrix(new double[this.getCountColumns()][this.getCountRows()]);
+        for (int row=0;row<resultMatrix.getCountRows();row++){
+            for(int column=0;column<resultMatrix.getCountColumns();column++){
+                resultMatrix.setElement(row,column,this.valueAt(resultMatrix.getCountColumns()-column,row+1));
+            }
+        }
+        return resultMatrix;
+    }
+    public DefaultConveyorMatrix rotate180(){
+        DefaultConveyorMatrix resultMatrix=new DefaultConveyorMatrix(new double[this.getCountRows()][this.getCountColumns()]);
+        for (int row=0;row<resultMatrix.getCountRows();row++){
+            for(int column=0;column<resultMatrix.getCountColumns();column++){
+                resultMatrix.setElement(row,column,this.valueAt(resultMatrix.getCountRows()-row,resultMatrix.getCountColumns()-column));
+            }
+        }
+        return resultMatrix;
+    }
+    public DefaultConveyorMatrix rotate270(){
+        DefaultConveyorMatrix resultMatrix=new DefaultConveyorMatrix(new double[this.getCountColumns()][this.getCountRows()]);
+        for (int row=0;row<resultMatrix.getCountRows();row++){
+            for(int column=0;column<resultMatrix.getCountColumns();column++){
+                resultMatrix.setElement(row,column,this.valueAt(column+1,resultMatrix.getCountRows()-row));
+            }
+        }
+        return resultMatrix;
+    }
+    public DefaultConveyorMatrix rotate(int count90){
+        DefaultConveyorMatrix resultMatrix=this;
+        for (int countRt=0;countRt<count90;countRt++){
+            resultMatrix=resultMatrix.rotate90();
+        }
+        return resultMatrix;
+    }
     public double det(){
         double result=0;
         if(this.isSquare()){
