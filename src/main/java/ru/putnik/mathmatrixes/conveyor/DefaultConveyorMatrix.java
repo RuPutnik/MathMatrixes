@@ -298,6 +298,23 @@ public class DefaultConveyorMatrix extends Matrix{
 
         return diag;
     }
+    public boolean isUnit(){
+        boolean unit=true;
+
+        return unit;
+    }
+    public boolean isZero(){
+        boolean zero=true;
+        for (int row=0;row<this.getCountRows();row++){
+            for(int column=0;column<this.getCountColumns();column++){
+                if(this.valueAt(row,column)!=0){
+                    zero=false;
+                    break;
+                }
+            }
+        }
+        return zero;
+    }
 
     @Override
     public String toString() {
