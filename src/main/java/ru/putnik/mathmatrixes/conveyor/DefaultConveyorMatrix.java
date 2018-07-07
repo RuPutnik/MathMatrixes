@@ -374,8 +374,24 @@ public class DefaultConveyorMatrix extends Matrix{
             for (int row=0;row<l.getCountRows();row++){
                 l.setElement(row,0,(a.valueAt(row+1,1)/u.valueAt(1,1)));
             }
-
-
+            for(int row=1;row<u.getCountRows();row++){
+                for(int column=row;column<u.getCountColumns();column++){
+                    double sum=0;
+                    for(int k=0;k<row-1;k++){
+                        sum=sum+(l.valueAt(row+1,k+1)*u.valueAt(k+1,column+1));
+                    }
+                    u.setElement(row,column,a.valueAt(row+1,column+1)-sum);
+                }
+            }
+            for(int column=1;column<l.getCountColumns();column++){
+                for(int row=column;row<l.getCountRows();row++){
+                    double sum=0;
+                    for(int k=0;k<column-1;k++){
+                        sum=sum+(l.valueAt(column+1,k+1)*u.valueAt(k+1,row+1));
+                    }
+                    l.setElement(row,column,(1.0/u.valueAt(column+1,column+1))*(a.valueAt(row+1,column+1)-sum));
+                }
+            }
 
 
             return new DefaultConveyorMatrix[]{l,u};
