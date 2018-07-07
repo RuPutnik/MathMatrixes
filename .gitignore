@@ -1,7 +1,7 @@
 pom.xml
 MathMatrixes.iml
 .idea
-src/main/java/TestLauncher.java
 target
 logs
 .gitignore
+src/main/java/TestLauncher.java
