@@ -362,6 +362,28 @@ public class DefaultConveyorMatrix extends Matrix{
             return null;
         }
     }
+    public DefaultConveyorMatrix[] decompositionLU(){
+        if(this.isSquare()) {
+            DefaultConveyorMatrix a = this;
+            DefaultConveyorMatrix l=new DefaultConveyorMatrix(new double[a.getCountColumns()][a.getCountColumns()]);
+            DefaultConveyorMatrix u=new DefaultConveyorMatrix(new double[a.getCountColumns()][a.getCountColumns()]);
+
+            for (int column=0;column<u.getCountColumns();column++){
+                u.setElement(0,column,a.valueAt(1,column+1));
+            }
+            for (int row=0;row<l.getCountRows();row++){
+                l.setElement(row,0,(a.valueAt(row+1,1)/u.valueAt(1,1)));
+            }
+
+
+
+
+            return new DefaultConveyorMatrix[]{l,u};
+        }else{
+            System.out.println("LU разложение осуществимо только для квадратных матриц!");
+            return null;
+        }
+    }
     public boolean isSymmetric(){
         return this.trans().equalsValues(this);
     }
