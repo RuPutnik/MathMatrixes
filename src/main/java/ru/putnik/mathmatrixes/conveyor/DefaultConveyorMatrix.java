@@ -364,52 +364,38 @@ public class DefaultConveyorMatrix extends Matrix{
     }
     public DefaultConveyorMatrix[] decompositionLU(){
         if(this.isSquare()) {
-            DefaultConveyorMatrix a = this;
-            DefaultConveyorMatrix l=new DefaultConveyorMatrix(new double[a.getCountColumns()][a.getCountColumns()]);
-            DefaultConveyorMatrix u=new DefaultConveyorMatrix(new double[a.getCountColumns()][a.getCountColumns()]);
+            if(this.valueAt(1,1)!=0&&this.det()!=0) {
+                DefaultConveyorMatrix a = this;
+                DefaultConveyorMatrix l = new DefaultConveyorMatrix(new double[a.getCountColumns()][a.getCountColumns()]);
+                DefaultConveyorMatrix u = new DefaultConveyorMatrix(new double[a.getCountColumns()][a.getCountColumns()]);
 
-            for (int column=0;column<u.getCountColumns();column++){
-                u.setElement(0,column,a.valueAt(1,column+1));
-            }
-            for (int row=0;row<l.getCountRows();row++){
-                l.setElement(row,0,(a.valueAt(row+1,1)/u.valueAt(1,1)));
-            }
-           /* for(int row=1;row<u.getCountRows();row++){
-                for(int column=row;column<u.getCountColumns();column++){
-                    double sum=0;
-                    for(int k=0;k<row-1;k++){
-                        sum=sum+(l.valueAt(row+1,k+1)*u.valueAt(k+1,column+1));
-                    }
-                    u.setElement(row,column,a.valueAt(row+1,column+1)-sum);
+                for (int column = 0; column < u.getCountColumns(); column++) {
+                    u.setElement(0, column, a.valueAt(1, column + 1));
                 }
-            }
-            for(int column=1;column<l.getCountColumns();column++){
-                for(int row=column;row<l.getCountRows();row++){
-                    double sum=0;
-                    for(int k=0;k<column-1;k++){
-                        sum=sum+(l.valueAt(column+1,k+1)*u.valueAt(k+1,row+1));
-                    }
-                    l.setElement(row,column,((1.0/u.valueAt(column+1,column+1)))*(a.valueAt(row+1,column+1)-sum));
+                for (int row = 0; row < l.getCountRows(); row++) {
+                    l.setElement(row, 0, (a.valueAt(row + 1, 1) / u.valueAt(1, 1)));
                 }
-            }*/
-
-            for(int i=1;i<a.getCountColumns();i++){
-                for(int j=i;j<a.getCountColumns();j++){
-                    double sum=0;
-                    for(int k=0;k<i;k++){
-                        sum=sum+(l.valueAt(i+1,k+1)*u.valueAt(k+1,j+1));
+                for (int i = 1; i < a.getCountColumns(); i++) {
+                    for (int j = i; j < a.getCountColumns(); j++) {
+                        double sum = 0;
+                        for (int k = 0; k < i; k++) {
+                            sum = sum + (l.valueAt(i + 1, k + 1) * u.valueAt(k + 1, j + 1));
+                        }
+                        u.setElement(i, j, (a.valueAt(i + 1, j + 1) - sum));
+                        double sum1 = 0;
+                        for (int k = 0; k < i; k++) {
+                            sum1 = sum1 + (l.valueAt(j + 1, k + 1) * u.valueAt(k + 1, i + 1));
+                        }
+                        l.setElement(j, i, (1.0 / u.valueAt(i + 1, i + 1)) * (a.valueAt(j + 1, i + 1) - sum1));
                     }
-                    u.setElement(i,j,(a.valueAt(i+1,j+1)-sum));
-                    double sum1=0;
-                    for(int k=0;k<i;k++){
-                        sum1=sum1+(l.valueAt(j+1,k+1)*u.valueAt(k+1,i+1));
-                    }
-                    l.setElement(j,i,(1.0/u.valueAt(i+1,i+1))*(a.valueAt(j+1,i+1)-sum1));
                 }
+
+
+                return new DefaultConveyorMatrix[]{l, u};
+            }else {
+                System.out.println("LU разложение осуществимо только для невырожденных матриц, при условии, что элемент с индексом [0,0] не равен 0!");
+                return null;
             }
-
-
-            return new DefaultConveyorMatrix[]{l,u};
         }else{
             System.out.println("LU разложение осуществимо только для квадратных матриц!");
             return null;

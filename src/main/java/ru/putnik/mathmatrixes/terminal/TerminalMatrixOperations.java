@@ -308,6 +308,45 @@ public class TerminalMatrixOperations {
             return null;
         }
     }
+    public static DefaultTerminalMatrix[] decompositionLU(DefaultTerminalMatrix matrix){
+        if(isSquare(matrix)) {
+            if(matrix.valueAt(1,1)!=0&&det(matrix)!=0) {
+                DefaultTerminalMatrix a = matrix;
+                DefaultTerminalMatrix l = new DefaultTerminalMatrix(new double[a.getCountColumns()][a.getCountColumns()]);
+                DefaultTerminalMatrix u = new DefaultTerminalMatrix(new double[a.getCountColumns()][a.getCountColumns()]);
+
+                for (int column = 0; column < u.getCountColumns(); column++) {
+                    u.setElement(0, column, a.valueAt(1, column + 1));
+                }
+                for (int row = 0; row < l.getCountRows(); row++) {
+                    l.setElement(row, 0, (a.valueAt(row + 1, 1) / u.valueAt(1, 1)));
+                }
+                for (int i = 1; i < a.getCountColumns(); i++) {
+                    for (int j = i; j < a.getCountColumns(); j++) {
+                        double sum = 0;
+                        for (int k = 0; k < i; k++) {
+                            sum = sum + (l.valueAt(i + 1, k + 1) * u.valueAt(k + 1, j + 1));
+                        }
+                        u.setElement(i, j, (a.valueAt(i + 1, j + 1) - sum));
+                        double sum1 = 0;
+                        for (int k = 0; k < i; k++) {
+                            sum1 = sum1 + (l.valueAt(j + 1, k + 1) * u.valueAt(k + 1, i + 1));
+                        }
+                        l.setElement(j, i, (1.0 / u.valueAt(i + 1, i + 1)) * (a.valueAt(j + 1, i + 1) - sum1));
+                    }
+                }
+
+
+                return new DefaultTerminalMatrix[]{l, u};
+            }else {
+                System.out.println("LU разложение осуществимо только для невырожденных матриц, при условии, что элемент с индексом [0,0] не равен 0!");
+                return null;
+            }
+        }else{
+            System.out.println("LU разложение осуществимо только для квадратных матриц!");
+            return null;
+        }
+    }
     public static DefaultTerminalMatrix getUnitMatrix(int length){
         double[][] values=new double[length][length];
 
