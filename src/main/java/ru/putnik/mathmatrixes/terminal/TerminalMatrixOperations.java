@@ -347,6 +347,81 @@ public class TerminalMatrixOperations {
             return null;
         }
     }
+    public static DefaultTerminalMatrix[] decompositionLUP(DefaultTerminalMatrix matrix){
+        if(isSquare(matrix)) {
+            DefaultTerminalMatrix c=matrix;
+            int countRow = matrix.getCountRows();
+
+            //загружаем в матрицу P единичную матрицу
+            DefaultTerminalMatrix e = new UnitTerminalMatrix(countRow);
+            DefaultTerminalMatrix l = new UnitTerminalMatrix(countRow);
+            DefaultTerminalMatrix u = new UnitTerminalMatrix(countRow);
+            DefaultTerminalMatrix p = new UnitTerminalMatrix(countRow);
+
+            for(int i = 0; i < countRow; i++){
+                //поиск опорного элемента
+                double pivotValue = 0;
+                int pivot = -1;
+                for(int row = i; row < countRow-1; row++){
+                    if(Math.abs(c.valueAt(row+1,i+1)) > pivotValue){
+                        pivotValue = Math.abs(c.valueAt(row+1,i+1));
+                        pivot = row;
+                    }
+                }
+                if(pivotValue != 0){
+                    //меняем местами i-ю строку и строку с опорным элементом
+                    p=swapRows(p,pivot, i);
+                    c=swapRows(c,pivot, i);
+                    for(int j = i+1; j < countRow; j++){
+                        c.setElement(j,i,c.valueAt(j+1,i+1)/c.valueAt(i+1,i+1));
+                        for(int k = i+1; k < countRow; k++) {
+                            c.setElement(j, k, c.valueAt(j + 1, k + 1) - c.valueAt(j + 1, i + 1) * c.valueAt(i + 1, k + 1));
+                        }
+                    }
+
+                }
+            }
+
+            c=add(c,e);
+            for (int row = 0; row<matrix.getCountRows(); row++){
+                for(int column = 0; column<=row; column++){
+                    if(row==column){
+                        l.setElement(row,column,1);
+                    }else {
+                        l.setElement(row, column, c.valueAt(row + 1, column + 1));
+                    }
+                }
+            }
+            for (int row = 0; row<matrix.getCountRows(); row++){
+                for(int column = matrix.getCountColumns()-1; column>=row; column--){
+                    if(row==column){
+                        u.setElement(row,column,c.valueAt(row+1,column+1)-1);
+                    }else {
+                        u.setElement(row,column, c.valueAt(row + 1, column + 1));
+                    }
+                }
+            }
+
+            return new DefaultTerminalMatrix[]{l,u,p};
+        }else{
+            System.out.println("LUP разложение осуществимо только для квадратных матриц!");
+            return null;
+        }
+    }
+    public static DefaultTerminalMatrix swapRows(DefaultTerminalMatrix matrix,int row1,int row2){
+        double[] tempRow=new double[matrix.getCountColumns()];
+
+        for (int column=0;column<matrix.getCountColumns();column++){
+            tempRow[column]=matrix.valueAt(row1+1,column+1);
+        }
+        for (int column=0;column<matrix.getCountColumns();column++){
+            matrix.setElement(row1,column,matrix.valueAt(row2+1,column+1));
+        }
+        for (int column=0;column<matrix.getCountColumns();column++){
+            matrix.setElement(row2,column,tempRow[column]);
+        }
+        return matrix;
+    }
     public static DefaultTerminalMatrix getUnitMatrix(int length){
         double[][] values=new double[length][length];
 
