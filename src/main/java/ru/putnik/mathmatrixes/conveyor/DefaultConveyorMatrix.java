@@ -513,7 +513,11 @@ public class DefaultConveyorMatrix extends Matrix{
         if(this.isSquare()) {
             boolean positive = true;
             for (int a = 0; a < this.getCountRows(); a++) {
-                if (this.sectionMatrix(0, 0, a, a).det() < 0) positive = false;
+                //System.out.println(this.sectionMatrix(0,0,a,a));
+                if (this.sectionMatrix(0, a, 0, a).det() < 0){
+                    positive = false;
+                    break;
+                }
             }
 
             return positive;
