@@ -483,12 +483,44 @@ public class DefaultConveyorMatrix extends Matrix{
         return matrix;
     }
     public DefaultConveyorMatrix decompositionCholesky(){
-        DefaultConveyorMatrix matrix=new DefaultConveyorMatrix(new double[this.getCountRows()][this.getCountColumns()]);
+        if(this.isSymmetric()&&this.isPositiveDefiniteness()) {
+            DefaultConveyorMatrix matrix = new DefaultConveyorMatrix(new double[this.getCountRows()][this.getCountColumns()]);
+            matrix.setElement(0,0,Math.sqrt(this.valueAt(1,1)));
+            for (int row=0;row<matrix.getCountRows();row++){
+                matrix.setElement(row,0,(this.valueAt(row+1,1)/matrix.valueAt(1,1)));
+            }
+            double summ=0;
+            for(int diagElement=1;diagElement<matrix.getCountColumns();diagElement++){
+                for(int p=1;p<diagElement-1;p++){
+                    summ=summ+Math.pow(matrix.valueAt(diagElement+1,p+1),2);
+                }
+                matrix.setElement(diagElement,diagElement,Math.sqrt(this.valueAt(diagElement+1,diagElement+1)-summ));
+                summ=0;
+            }
 
-        return matrix;
+
+            return matrix;
+        }else {
+            System.out.println("Разложение Холецкого осуществимо только для положительно определенных симметричных матриц!");
+            return null;
+        }
+
     }
     public boolean isSymmetric(){
         return this.trans().equalsValues(this);
+    }
+    public boolean isPositiveDefiniteness(){
+        if(this.isSquare()) {
+            boolean positive = true;
+            for (int a = 0; a < this.getCountRows(); a++) {
+                if (this.sectionMatrix(0, 0, a, a).det() < 0) positive = false;
+            }
+
+            return positive;
+        }else{
+            System.out.println("Положительная определенность возможна только у кавадратных матриц!");
+            return false;
+        }
     }
     public boolean isDiag(){
         boolean diag=true;
