@@ -422,6 +422,53 @@ public class TerminalMatrixOperations {
         }
         return matrix;
     }
+    public static DefaultTerminalMatrix decompositionCholesky(DefaultTerminalMatrix inputMatrix){
+        if(isSymmetric(inputMatrix)&&isPositiveDefiniteness(inputMatrix)) {
+            DefaultTerminalMatrix matrix = new DefaultTerminalMatrix(new double[inputMatrix.getCountRows()][inputMatrix.getCountColumns()]);
+            matrix.setElement(0,0,Math.sqrt(inputMatrix.valueAt(1,1)));
+            for (int row=1;row<matrix.getCountRows();row++){
+                matrix.setElement(row,0,(inputMatrix.valueAt(row+1,1)/matrix.valueAt(1,1)));
+            }
+
+            for(int i=1;i<matrix.getCountColumns();i++){
+                double summ=0;
+                for(int p=0;p<i;p++){
+                    summ=summ+Math.pow(matrix.valueAt(i+1,p+1),2);
+                }
+                matrix.setElement(i,i,Math.sqrt(inputMatrix.valueAt(i+1,i+1)-summ));
+
+                for(int j=i+1;j<matrix.getCountColumns();j++){
+                    double summ1=0;
+                    for(int p=0;p<i;p++){
+                        summ=summ+(matrix.valueAt(i+1,p+1)*matrix.valueAt(j+1,p+1));
+                    }
+                    matrix.setElement(j,i,(inputMatrix.valueAt(j+1,i+1)-summ1)/matrix.valueAt(i+1,i+1));
+                }
+
+            }
+            return matrix;
+        }else {
+            System.out.println("Разложение Холецкого осуществимо только для положительно определенных симметричных матриц!");
+            return null;
+        }
+
+    }
+    public static boolean isPositiveDefiniteness(DefaultTerminalMatrix matrix){
+        if(isSquare(matrix)) {
+            boolean positive = true;
+            for (int a = 0; a < matrix.getCountRows(); a++) {
+                if (det(sectionMatrix(matrix,0, a, 0, a))< 0){
+                    positive = false;
+                    break;
+                }
+            }
+
+            return positive;
+        }else{
+            System.out.println("Положительная определенность возможна только у кавадратных матриц!");
+            return false;
+        }
+    }
     public static DefaultTerminalMatrix getUnitMatrix(int length){
         double[][] values=new double[length][length];
 

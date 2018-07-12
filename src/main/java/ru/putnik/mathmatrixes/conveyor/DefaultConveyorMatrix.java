@@ -493,17 +493,13 @@ public class DefaultConveyorMatrix extends Matrix{
             for(int i=1;i<matrix.getCountColumns();i++){
                 double summ=0;
                 for(int p=0;p<i;p++){
-                    System.out.println();
                     summ=summ+Math.pow(matrix.valueAt(i+1,p+1),2);
                 }
-                System.out.println(summ);
                 matrix.setElement(i,i,Math.sqrt(this.valueAt(i+1,i+1)-summ));
-
 
                 for(int j=i+1;j<matrix.getCountColumns();j++){
                     double summ1=0;
                     for(int p=0;p<i;p++){
-                        System.out.println();
                         summ=summ+(matrix.valueAt(i+1,p+1)*matrix.valueAt(j+1,p+1));
                     }
                     matrix.setElement(j,i,(this.valueAt(j+1,i+1)-summ1)/matrix.valueAt(i+1,i+1));
