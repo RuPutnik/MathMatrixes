@@ -482,6 +482,11 @@ public class DefaultConveyorMatrix extends Matrix{
         }
         return matrix;
     }
+    public DefaultConveyorMatrix decompositionCholesky(){
+        DefaultConveyorMatrix matrix=new DefaultConveyorMatrix(new double[this.getCountRows()][this.getCountColumns()]);
+
+        return matrix;
+    }
     public boolean isSymmetric(){
         return this.trans().equalsValues(this);
     }
